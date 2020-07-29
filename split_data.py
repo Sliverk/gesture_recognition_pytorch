@@ -2,7 +2,7 @@ import os
 import sys
 import glob
 
-root = '/home/zz/expr/code/python/gesture/data/'
+root = './data/'
 
 dirs_collect = glob.glob(root+'*')
 
