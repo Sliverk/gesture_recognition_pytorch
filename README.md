@@ -1,5 +1,8 @@
 # Gesture Recognition
 A simple implemention in pytorch for hand gesture recognition.
+<p align="center">
+  <img src="number.png" width="95%">
+</p>
 
 Data source: [Baidu AI Studio]
 
@@ -26,6 +29,11 @@ python split_data.py
 ```shell
 python train_gesture.py
 ```
+
+Train loss:
+<p align="center">
+  <img src="loss.png" width="95%">
+</p>
 
 3. Test
 ```shell
