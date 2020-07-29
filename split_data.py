@@ -2,7 +2,7 @@ import os
 import sys
 import glob
 
-root = './data/'
+root = '/FULL/PATH/TO/DATA/ROOT/'
 
 dirs_collect = glob.glob(root+'*')
 
