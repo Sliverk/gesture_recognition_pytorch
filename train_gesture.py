@@ -1,15 +1,10 @@
 import torch 
 import torchvision 
-import torchvision.transforms as transforms
 from skimage import transform as tranf
 from skimage import io
 # from PIL import Image
 import numpy as np
 
-transform = transforms.Compose(
-    [transforms.ToTensor(),
-    transforms.Normalize((0.5,0.5,0.5), (0.5,0.5,0.5))]
-)
 
 
 class GestureData(torch.utils.data.Dataset):
@@ -32,21 +27,10 @@ class GestureData(torch.utils.data.Dataset):
         label = int(record.split(',')[1].strip())
         image = io.imread(img_path) / 255
         if not image.shape == (100, 100, 3):
-            # print(image.shape, img_path)
             image = tranf.resize(image, (100,100))
-            # print('CHANGED')
 
         image = image.transpose(2, 1, 0)
         image = torch.tensor(image, dtype=torch.float32)
-
-
-        # sample = {'image':image, 'landmarks':label}
-
-        # if self.transform is not None:
-        #     img = self.transform(img)
-
-        # if self.target_transform is not None:
-        #     target = self.target_transform(target)
         
         return image, label
 
@@ -61,7 +45,7 @@ import torch.nn.functional as F
 class MyNet(nn.Module):
     def __init__(self):
         super(MyNet, self).__init__()
-        # 3 input channel, 6 output channels, 5x5 conv kernel, 1x1 pad
+        # 3 input channel, 6 output channels, 3x3 conv kernel
         self.conv1 = nn.Conv2d(3, 6, 3)
         self.conv2 = nn.Conv2d(6, 16, 3)
         self.conv3 = nn.Conv2d(16, 32, 3)
@@ -74,7 +58,6 @@ class MyNet(nn.Module):
         x = self.pool(F.relu(self.conv1(x)))
         x = self.pool(F.relu(self.conv2(x)))
         x = self.pool(F.relu(self.conv3(x)))
-        # print(self.num_flat_features(x)/32)
         x = x.view(-1, 32*10*10)
         x = F.relu(self.fc1(x))
         x = F.relu(self.fc2(x))
